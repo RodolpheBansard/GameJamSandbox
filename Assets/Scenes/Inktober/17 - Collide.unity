@@ -397,7 +397,7 @@ GameObject:
   - component: {fileID: 1516861188}
   - component: {fileID: 1516861187}
   m_Layer: 6
-  m_Name: Cube (1)
+  m_Name: level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4441,7 +4441,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh36408
+  m_Name: pb_Mesh23080
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5783,6 +5783,7 @@ MonoBehaviour:
   groundDrag: 5
   airDrag: 1
   airMultiplier: 0.2
+  crackParticlePrefab: {fileID: 7119343497919709552, guid: 01eb9b3905c20ba4aac6628fee93017c, type: 3}
   turnSmoothTime: 0.1
 --- !u!54 &2971831271126387343
 Rigidbody:

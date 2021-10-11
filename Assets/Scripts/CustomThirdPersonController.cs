@@ -17,6 +17,8 @@ public class CustomThirdPersonController : MonoBehaviour
     public float airDrag = 1;
     public float airMultiplier = 0.3f;
 
+    public GameObject crackParticlePrefab;
+
 
     float horizontalMovement;
     float verticalMovement;
@@ -26,7 +28,9 @@ public class CustomThirdPersonController : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     private float smoothVelocity;
 
+
     bool isGrounded;
+    bool isplayingCrackParticle = false;
 
     private void Start()
     {
@@ -36,6 +40,12 @@ public class CustomThirdPersonController : MonoBehaviour
     private void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, .3f, groundMask);
+
+        if (isGrounded && rigidbody.velocity.y < -20 && !isplayingCrackParticle)
+        {
+            isplayingCrackParticle = true;
+            StartCoroutine(PlayCrackParticle());
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -88,6 +98,18 @@ public class CustomThirdPersonController : MonoBehaviour
     {
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
         rigidbody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+    }
+
+    IEnumerator PlayCrackParticle()
+    {
+        //spawn Particle
+        GameObject crackParticle = Instantiate(crackParticlePrefab, transform) as GameObject;
+        crackParticle.transform.parent = null;
+
+        yield return new WaitForSeconds(1);
+        isplayingCrackParticle = false;
+
+
     }
 
    
