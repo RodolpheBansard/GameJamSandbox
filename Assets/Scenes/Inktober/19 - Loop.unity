@@ -155,7 +155,7 @@ MonoBehaviour:
   obstaclePrefab: {fileID: 2582755131337088206, guid: 0771785b9cbdfff4499a8a1f8fd217f1, type: 3}
   spawnPosition: {fileID: 1577022158}
   spawnRate: 3
-  randomPositionRange: {x: -1.5, y: 1.5}
+  randomPositionRange: {x: -3, y: 3}
 --- !u!4 &152685088
 Transform:
   m_ObjectHideFlags: 0
