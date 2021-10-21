@@ -16,9 +16,10 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Drag")]
     float groundDrag = 6f;
-    float airDrag = 2f;
+    float airDrag = 1f;
     public float movementMultiplier = 10f;
     public float airMultiplier = 0.4f;
+    public float blueGelMultiplier = 2f;
 
     [Header("Keybinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
@@ -28,6 +29,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheck;
     float groundDistance = 0.4f;
     bool isGrounded;
+    bool isInBlueGel;
 
     Vector3 moveDirection;
     Vector3 slopeMoveDirection;
@@ -46,7 +48,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        var prevIsGrounded = isGrounded;
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+        isInBlueGel = IsInBlueGel();
+
+        if(isGrounded && prevIsGrounded == false && isInBlueGel){
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(transform.up * jumpForce * blueGelMultiplier, ForceMode.Impulse);
+        }
+
+        
 
         MyInput();
         ControlDrag();
@@ -87,7 +99,14 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+
+        if(!isInBlueGel){
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        }
+        else{
+            rb.AddForce(transform.up * jumpForce * blueGelMultiplier, ForceMode.Impulse);
+        }
+        
     }
 
     void ControlSpeed()
@@ -130,4 +149,17 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(moveDirection.normalized * moveSpeed * airMultiplier, ForceMode.Acceleration);
         }
     }
+
+    private bool IsInBlueGel(){
+        Collider[] hitColliders = Physics.OverlapSphere(groundCheck.position, .5f);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.tag.Equals("blueGel"))
+            {
+                return true;
+            }
+        } 
+        return false;
+    }
+    
 }
